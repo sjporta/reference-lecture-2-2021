@@ -92,7 +92,7 @@ class Player(Bot):
 
         deck = eval7.Deck() #eval7 object!
         hole_cards = [eval7.Card(card) for card in hole] #card objects, used to evaliate hands
-        community = [eval17.Card(card) for card in board]
+        old_community = [eval7.Card(card) for card in board]
 
         for card in hole_cards: #remove cards that we know about! they shouldn't come up in simulations
             deck.cards.remove(card)
@@ -102,13 +102,13 @@ class Player(Bot):
         for _ in range(iters): #take 'iters' samples
             deck.shuffle() #make sure our samples are random
 
-            _COMM = 5 - len(community) #the number of cards we need to draw
+            _COMM = 5 - len(old_community) #the number of cards we need to draw
             _OPP = 2
 
             draw = deck.peek(_COMM + _OPP)
 
             opp_hole = draw[: _OPP]
-            community += draw[_OPP: ]
+            community = old_community + draw[_OPP: ]
 
             our_hand = hole_cards + community #the two showdown hands
             opp_hand = opp_hole + community
@@ -141,7 +141,6 @@ class Player(Bot):
         Returns:
         Nothing.
         '''
-        boards = round_state.boards
         my_bankroll = game_state.bankroll  # the total number of chips you've gained or lost from the beginning of the game to the start of this round
         opp_bankroll = game_state.opp_bankroll # ^but for your opponent
         game_clock = game_state.game_clock  # the total number of seconds your bot has left to play this game
@@ -155,7 +154,8 @@ class Player(Bot):
 
         for i in range(NUM_BOARDS): #calculate strengths for each hole pair
             hole = self.board_allocations[i]
-            strength = self.calcualte_strength(hole, boards[i], _MONTE_CARLO_ITERS)
+
+            strength = self.calcualte_strength(hole, [], _MONTE_CARLO_ITERS)
             self.hole_strengths[i] = strength
 
     def handle_round_over(self, game_state, terminal_state, active):
@@ -224,6 +224,13 @@ class Player(Bot):
                 my_actions[i] = CheckAction() #check if it is
             
             else: #do we add more resources?
+
+                # Current boards on the table
+                comm = [item for item in board_cards[i] if item]
+
+                # Updates strength, given our hand and community, runs 100 times
+                self.calcualte_strength(self.board_allocations[i], comm, 100)
+
                 board_cont_cost = continue_cost[i] #we need to pay this to keep playing
                 board_total = round_state.board_states[i].pot #amount before we started betting
                 pot_total = my_pips[i] + opp_pips[i] + board_total #total money in the pot right now
