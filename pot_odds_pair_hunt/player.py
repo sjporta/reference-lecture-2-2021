@@ -288,14 +288,14 @@ class Player(Bot):
                 min_raise, max_raise = round_state.board_states[i].raise_bounds(active, round_state.stacks)
                 strength = self.hole_strengths[i]
 
-                print(f'Deciding on {self.board_allocations[i], comm, strength}')
-
                 if street < 3: #pre-flop
                     #TODO adjust these random amounts
-                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.25 *
+                    raise_ammount = int(my_pips[i] + board_cont_cost +
+                                        strength / 2 *
                                         (pot_total + board_cont_cost)) #play a little conservatively pre-flop
                 else:
-                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.5 *
+                    raise_ammount = int(my_pips[i] + board_cont_cost +
+                                        strength *
                                         (pot_total + board_cont_cost)) #raise the stakes deeper into the game
                 
                 raise_ammount = max([min_raise, raise_ammount]) #make sure we have a valid raise
