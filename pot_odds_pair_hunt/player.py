@@ -282,6 +282,8 @@ class Player(Bot):
                 # Updates strength, given our hand and community, runs 100 times
                 self.calcualte_strength(self.board_allocations[i], comm, 100)
 
+                print(self.board_allocations[i], comm, strength)
+
                 board_cont_cost = continue_cost[i] #we need to pay this to keep playing
                 board_total = round_state.board_states[i].pot #amount before we started betting
                 pot_total = my_pips[i] + opp_pips[i] + board_total #total money in the pot right now
