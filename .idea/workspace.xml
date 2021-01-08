@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5247d97b-a84c-4fe1-96b4-69b5bf2b2bbf" name="Default Changelist" comment="">
+    <list default="true" id="5247d97b-a84c-4fe1-96b4-69b5bf2b2bbf" name="Default Changelist" comment="Considered community cards in MC sims">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pot_odds_pair_hunt/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/pot_odds_pair_hunt/player.py" afterDir="false" />
     </list>
@@ -35,17 +35,29 @@
       <option name="presentableId" value="Default" />
       <updated>1610059475646</updated>
     </task>
+    <task id="LOCAL-00001" summary="Considered community cards in MC sims">
+      <created>1610063555846</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610063555846</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Considered community cards in MC sims" />
+    <option name="LAST_COMMIT_MESSAGE" value="Considered community cards in MC sims" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="259" y="0" key="CommitChangelistDialog2" timestamp="1610063481989">
+    <state x="259" y="0" key="CommitChangelistDialog2" timestamp="1610065100450">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="259" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1610063481989" />
-    <state x="122" y="50" key="DiffContextDialog" timestamp="1610063479578">
+    <state x="259" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1610065100450" />
+    <state x="122" y="50" key="DiffContextDialog" timestamp="1610065099093">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="122" y="50" key="DiffContextDialog/0.0.1280.680@0.0.1280.680" timestamp="1610063479578" />
+    <state x="122" y="50" key="DiffContextDialog/0.0.1280.680@0.0.1280.680" timestamp="1610065099093" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1610060681981">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

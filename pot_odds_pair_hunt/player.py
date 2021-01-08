@@ -41,6 +41,51 @@ class Player(Bot):
         '''
         ranks = {}
 
+        ordered = [[card[0], card] for card in my_cards]
+
+
+        for pair in ordered:
+            rank = pair[0]
+            if rank.isnumeric():
+                pair[0] = int(rank)
+            elif rank == 'T':
+                pair[0] = 10
+            elif rank == 'J':
+                pair[0] = 11
+            elif rank == 'Q':
+                pair[0] = 12
+            else:
+                pair[0] = 13
+
+        # Made it only choose close pairs now, good for straights
+        new = [card[1] for card in sorted(ordered, key=lambda a: a[0] )]
+
+        # Disgusting, but pairs things up correctly
+        pairs = []
+        skip = False
+        for i in range(5):
+            if skip:
+                skip = False
+                continue
+
+            elif new[i][0] == new[i+1][0]:
+                pairs.append(new[i])
+                pairs.append(new[i+1])
+                skip = True
+
+        new = [card for card in new if card not in pairs]
+        self.board_allocations = [[pairs[2*i], pairs[2*i+1]] for i in range(
+            len(pairs) // 2)]
+
+        for i in range(NUM_BOARDS - len(pairs) // 2): #subsequent pairs of
+            # cards should be
+            # pocket pairs if we found any
+
+            cards = [new[2*i], new[2*i + 1]]
+            self.board_allocations.append(cards) #record our allocations
+
+        return
+
         for card in my_cards:
             card_rank = card[0] #2 - 9, T, J, Q, K, A
             card_suit = card[1] # d, h, s, c
@@ -91,10 +136,16 @@ class Player(Bot):
         '''
 
         deck = eval7.Deck() #eval7 object!
-        hole_cards = [eval7.Card(card) for card in hole] #card objects, used to evaliate hands
+        hole_cards = [eval7.Card(card) for card in hole]
         old_community = [eval7.Card(card) for card in board]
 
-        for card in hole_cards: #remove cards that we know about! they shouldn't come up in simulations
+        # remove cards we know we were dealt
+        for hand in self.board_allocations:
+            for card in hand:
+                deck.cards.remove(eval7.Card(card))
+
+        # Remove the community cards too
+        for card in old_community:
             deck.cards.remove(card)
 
         score = 0
@@ -238,9 +289,12 @@ class Player(Bot):
                 strength = self.hole_strengths[i]
 
                 if street < 3: #pre-flop
-                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.4 * (pot_total + board_cont_cost)) #play a little conservatively pre-flop
+                    #TODO adjust these random amounts
+                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.25 *
+                                        (pot_total + board_cont_cost)) #play a little conservatively pre-flop
                 else:
-                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.75 * (pot_total + board_cont_cost)) #raise the stakes deeper into the game
+                    raise_ammount = int(my_pips[i] + board_cont_cost + 0.5 *
+                                        (pot_total + board_cont_cost)) #raise the stakes deeper into the game
                 
                 raise_ammount = max([min_raise, raise_ammount]) #make sure we have a valid raise
                 raise_ammount = min([max_raise, raise_ammount])
@@ -271,7 +325,8 @@ class Player(Bot):
 
                     if strength >= pot_odds: #Positive Expected Value!! at least call!!
 
-                        if strength > 0.5 and random.random() < strength: #raise sometimes, more likely if our hand is strong
+                        if strength > 0.5 and random.random() < strength:
+                            #raise sometimes, more likely if our hand is strong
                             my_actions[i] = commit_action
                             net_cost += commit_cost
                         
